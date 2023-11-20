@@ -1,0 +1,17 @@
+{
+  "name": "5t",
+  "scripts": {
+    "dev": "imba -w index.html",
+    "build": "imba build index.html",
+    "spa-preview": "npx vite preview",
+    "preview": "node dist/server.js",
+    "prod": "npx pm2 start dist/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "idb-keyval": "^6.2.1"
+  },
+  "devDependencies": {
+    "imba": "^2.0.0-alpha.231"
+  }
+}
