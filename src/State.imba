@@ -1,42 +1,6 @@
 import type {Content, Card, Column} from './models'
 import Store from './Store'
 
-# {
-# 		columns: [
-# 			# {id: "1000", title: 'Sunday', index: 0, limit: 3, status: 'open', week: '2023-45', toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-# 			# {id: "2000", title: "Monday", index: 1, limit: 3, status: 'open', week: '2023-45', toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-# 			# {id: "3000", title: 'Tuesday', index: 2, limit: 3, status: 'open', week: '2023-45', toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-# 			# {id: "4000", title: 'Wednesday', index: 3, limit: 3, status: 'open', week: '2023-45', toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-# 			# {id: "5000", title: 'Thursday', index: 4, limit: 3, status: 'open', week: '2023-45', toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-# 			# {id: "6000", title: 'Friday', index: 5, limit: 3, status: 'open', week: '2023-45', toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-# 			# {id: "7000", title: 'Saturday', index: 6, limit: 3, status: 'open', week: '2023-45', toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-# 			# {id: "8000", title: 'Next week', index: 7, limit: 7, status: 'open', week: '2023-45', toFill: true, canAdd: yes, canMoveOut: yes, color: "lime1"}
-# 			# {id: "9000", title: 'Gave up', index: 8, limit: 5, status: 'open', week: '2023-45', toFill: false, canAdd: no, canMoveOut: no, color: "purple1"}
-# 		],
-# 		cards: [
-# 			# {id: uid!, title: "Try 1", index: 1, columnId: "1000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 2', index: 2, columnId: "1000", status: 'done'}
-# 			# {id: uid!, title: 'Try 3', index: 3, columnId: "1000", status: 'done'}
-# 			# {id: uid!, title: "Try 4.1", index: 1, columnId: "2000", status: 'done'}
-# 			# {id: uid!, title: "Try 4.2", index: 2, columnId: "2000", status: 'done'}
-# 			# {id: uid!, title: "Try 4.3", index: 3, columnId: "2000", status: 'missed'}
-# 			# {id: uid!, title: 'Try 5.1', index: 1, columnId: "3000", status: 'done'}
-# 			# {id: uid!, title: 'Try 5.2', index: 2, columnId: "3000", status: 'missed'}
-# 			# {id: uid!, title: 'Try 5.3', index: 3, columnId: "3000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 6.1', index: 1, columnId: "4000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 6.2', index: 2, columnId: "4000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 6.3', index: 3, columnId: "4000", status: 'pending'}
-# 			# {id: uid!, title: "Try 7", index: 1, columnId: "8000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 8', index: 2, columnId: "8000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 9', index: 3, columnId: "8000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 10', index: 4, columnId: "8000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 11', index: 5, columnId: "8000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 12', index: 6, columnId: "8000", status: 'pending'}
-# 			# {id: uid!, title: 'Try 13', index: 7, columnId: "8000", status: 'pending'}
-# 			# {id: uid!, title: 'Discarded', index: 1, columnId: "9000", status: 'pending'}
-# 		]
-# 	}
-
 def uid do (Math.random() + 1).toString(36).substring(6)
 
 def currentWeek
