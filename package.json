@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "imba -w server.imba",
     "start": "imba server.imba",
-    "build": "imba build -H --baseurl . server.imba",
+    "build": "imba build server.imba",
     "predeploy": "npm run build && touch dist/public/.nojekyll",
     "deploy": "gh-pages -d dist/public --dotfiles"
   },
