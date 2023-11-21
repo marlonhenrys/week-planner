@@ -1,5 +1,5 @@
-import type {Content, Card, Column} from './models'
-import Store from './Store'
+import type {Content, Card, Column} from './models.imba'
+import Store from './Store.imba'
 
 def uid do (Math.random() + 1).toString(36).substring(6)
 

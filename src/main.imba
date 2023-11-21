@@ -1,6 +1,6 @@
-import Column from './components/Column'
-import Checker from './components/Checker'
-import State from './State'
+import Column from './components/Column.imba'
+import Checker from './components/Checker.imba'
+import State from './State.imba'
 
 global css body ff:sans bgc:warmer1 box-sizing:border-box
 	.hidden visibility:hidden

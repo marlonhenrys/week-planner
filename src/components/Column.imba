@@ -1,7 +1,7 @@
-import type { Column as IColumn } from '../models'
-import Card from './Card'
-import CardAdder from './CardAdder'
-import State from '../State'
+import type { Column as IColumn } from '../models.imba'
+import Card from './Card.imba'
+import CardAdder from './CardAdder.imba'
+import State from '../State.imba'
 
 export default tag Column
 	data\IColumn

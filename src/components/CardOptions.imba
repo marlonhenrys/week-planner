@@ -1,5 +1,5 @@
-import State from '../State'
-import type { Card } from '../models'
+import State from '../State.imba'
+import type { Card } from '../models.imba'
 
 export default tag CardOptions
 	card\Card

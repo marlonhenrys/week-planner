@@ -1,6 +1,6 @@
-import type {Card as ICard} from '../models'
-import CardOptions from './CardOptions'
-import State from '../State'
+import type {Card as ICard} from '../models.imba'
+import CardOptions from './CardOptions.imba'
+import State from '../State.imba'
 
 export default tag Card
 	data\ICard

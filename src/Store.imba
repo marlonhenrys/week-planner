@@ -1,5 +1,5 @@
 import * as IDB from 'idb-keyval';
-import type { Content, Card, Column } from './models'
+import type { Content, Card, Column } from './models.imba'
 
 def loadContent\Content
 	const activeWeek = await IDB.get 'activeWeek'
