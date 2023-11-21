@@ -17,4 +17,5 @@ export default defineConfig({
 			? new GithubActionsReporter()
 			: 'default'
 	},
+	base: "/week-planner/",
 });
