@@ -14,7 +14,7 @@ export default tag Checker
 	get daysToFinish
 		Object.keys(cardsToFinishByColum)
 
-	css d:vtc h:88vh w:100% g:5
+	css d:vtc w:100% g:5
 		.columns d:htc flw:wrap g:8
 		.column d:vflex g:4 rd:lg bgc:violet1 p:2 bxs:sm
 		.column-title m:0 c:warm6 ta:center

@@ -29,7 +29,7 @@ export default tag CardOptions
 		State.completeCard card
 		self.close!
 
-	css dialog bd:cooler2 bgc:warmer1 w:230px bxs:lg rd:lg cursor:default
+	css dialog bd:cooler2 bgc:warmer1 w@lt-sm:250px w@350:300px w@lg:250px bxs:lg rd:lg cursor:default
 		.container d:vflex g:4
 		.row d:hcs g:2
 		.line d:hcl g:1

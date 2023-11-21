@@ -2,7 +2,7 @@ import Column from './components/Column.imba'
 import Checker from './components/Checker.imba'
 import State from './State.imba'
 
-global css body ff:sans bgc:warmer1 box-sizing:border-box w:100% m:0 p:0
+global css body ff:sans bgc:warmer1 box-sizing:border-box w:100% mih:100vh m:0 p:0
 	.hidden visibility:hidden
 	.close as:flex-end bd:none bgc:transparent c:rose5 @hover:rose6 fs:1xl
 		@focus olc:red4
@@ -19,7 +19,7 @@ tag App
 
 	def setup do State.checkHistory!
 
-	css d:htc flw:wrap maw:1500px miw:230px g:15 p:2%
+	css d:htc flw:wrap g:15 p:2%
 
 	<self>
 		if State.cardsToFinish.length > 0

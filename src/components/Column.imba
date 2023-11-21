@@ -94,7 +94,7 @@ export default tag Column
 		State.moveCard draggingCard, data.id
 		#hovering = no
 
-	css d:vcc bgc:$color bc:black px:4 py:3 rd:md g:2 bxs:md w:220px tween:all 1s ease
+	css d:vcc bgc:$color bc:black px:4 py:3 rd:md g:2 bxs:md w@lt-sm:250px w@350:300px w@lg:220px tween:all 1s ease
 		h2 m:0 c:warm6 cursor:default
 		.drop-area d:hcc c:gray5 fw:bold m:0 w:105% bd:1px dashed gray5 rd:lg
 
