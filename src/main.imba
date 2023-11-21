@@ -7,7 +7,7 @@ global css body ff:sans bgc:warmer1 box-sizing:border-box
 	.close as:flex-end bd:none bgc:transparent c:rose5 @hover:rose6 fs:1xl
 		@focus olc:red4
 
-tag App
+tag Container
 	#today = (new Date).toLocaleDateString!
 
 	def build
@@ -29,6 +29,9 @@ tag App
 
 tag Loader
 	def routed do await State.init!
-	<self> <App>
+	<self> <Container>
 
-imba.mount do <Loader route='/'>
+tag app
+	<self> <Loader route='/'>
+
+imba.mount <app>, document.getElementById "app"
