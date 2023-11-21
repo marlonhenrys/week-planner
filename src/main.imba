@@ -32,6 +32,6 @@ tag Loader
 	<self> <Container>
 
 tag app
-	<self> <Loader route='/'>
+	<self> <Loader route='/week-planner'>
 
 imba.mount <app>, document.getElementById "app"
