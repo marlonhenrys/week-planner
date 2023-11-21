@@ -2,12 +2,12 @@ import Column from './components/Column.imba'
 import Checker from './components/Checker.imba'
 import State from './State.imba'
 
-global css body ff:sans bgc:warmer1 box-sizing:border-box
+global css body ff:sans bgc:warmer1 box-sizing:border-box w:100% m:0 p:0
 	.hidden visibility:hidden
 	.close as:flex-end bd:none bgc:transparent c:rose5 @hover:rose6 fs:1xl
 		@focus olc:red4
 
-tag Container
+tag App
 	#today = (new Date).toLocaleDateString!
 
 	def build
@@ -19,7 +19,7 @@ tag Container
 
 	def setup do State.checkHistory!
 
-	css d:htc flw:wrap maw:1500px miw:230px g:13 p:2%
+	css d:htc flw:wrap maw:1500px miw:230px g:15 p:2%
 
 	<self>
 		if State.cardsToFinish.length > 0
@@ -29,9 +29,6 @@ tag Container
 
 tag Loader
 	def routed do await State.init!
-	<self> <Container>
+	<self> <App>
 
-tag app
-	<self> <Loader route='/week-planner'>
-
-imba.mount <app>, document.getElementById "app"
+imba.mount (do <Loader route='*'>), document.getElementById "app"

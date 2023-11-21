@@ -37,7 +37,7 @@ export default tag CardAdder
 
 	css .open bgc:transparent p:5px rd:lg bd:1px dashed cooler4 c:cooler5 w:100%
 		@focus bc:cooler5 ol:clear
-		@hover bgc:cool0
+		@hover bgc:cooler0
 
 	<self[w:105%]>
 		<dialog$dialog @keydown.esc.prevent=close>
