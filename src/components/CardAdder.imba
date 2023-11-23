@@ -32,7 +32,7 @@ export default tag CardAdder
 			@focus olc:indigo3
 		.save as:flex-end rd:md bgc:indigo6 c:warm1 bd:1px solid indigo6 px:2 py:1 fw:bold ls:1.2 w:100%
 			@hover bgc:indigo7
-			@focus olc:indigo7
+			@focus olc:indigo3
 		.disabled pe:none o:20%
 
 	css .open bgc:transparent p:5px rd:lg bd:1px dashed cooler4 c:cooler5 w:100%
@@ -47,7 +47,7 @@ export default tag CardAdder
 					<button.close @click=close> '✖'
 				<form.container @submit.prevent=save>
 					<textarea$input name='title' placeholder=placeholder rows=5 bind=content>
-					<span [mt:-3 fs:xs c:gray5]> "* Describe it in up to 180 characters"
+					<span [mt:-3 fs:xs c:gray5]> "* Describe in up to 180 characters"
 					<button.save .disabled=(not valid?) type='submit'> "That's it!"
 				
 		<button$openBtn.open [bgc:cool1]=$dialog.open @click=open> if $dialog.open then 'Thinking...' else 'I am going to...'

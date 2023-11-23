@@ -1,5 +1,6 @@
 import State from '../State.imba'
 import type { Card } from '../models.imba'
+import moveIcon from '../assets/move-icon.png'
 
 export default tag CardOptions
 	card\Card
@@ -49,13 +50,14 @@ export default tag CardOptions
 			@keyframes open
 				from w:0%
 				to w:100%
-		.bar bgc:green7 rd:full w:100% h:3px tween:all 1.5s ease animation:open 1.2s
+		.bar bgc:green7 rd:full w:100% h:3px tween:all 1.3s ease animation:open 1s
 		.hold
-			.bar w:0% tween:all 1.5s ease
+			.bar w:0% tween:all 1.3s ease
 
-	css .open bgc:transparent rd:full bd:1px solid cyan6 c:cyan6
-		@focus bgc:cyan1 olc:cyan6
-		@hover bgc:cyan1
+	css .open bgc:transparent rd:md bd:none d:hcc p:0 bd:1px solid transparent bgc:cooler2 p:0.4
+		.icon w:18px rotate:90deg filter:contrast(10%)
+		@focus olc:cooler4
+		@hover bgc:cooler3
 
 	<self>
 		<dialog$dialog @keydown.esc.prevent=close>
@@ -77,7 +79,7 @@ export default tag CardOptions
 					if forToday?
 						<span [d:hcc mb:4px c:cool6]> 'or'
 						<.action>
-							<button.btn.done @touch.flag('hold', '.action').hold(duration=1.3s)=done> "Mark as done"
+							<button.btn.done @touch.flag('hold', '.action').hold(duration=1s)=done> "Mark as done"
 							<.bar>
 
-		<button$openBtn.open @click=open> "❯"
+		<button$openBtn.open @click=open> <img.icon src=moveIcon>

@@ -24,7 +24,7 @@ export default tag Checker
 		.done bgc:green1 bc:green1
 			@hover bgc:green2 bc:green2
 			@focus olc:green2
-		.missed bgc:rose1 bc:rose1
+		.undone bgc:rose1 bc:rose1
 			@hover bgc:rose2 bc:rose2
 			@focus olc:rose2
 
@@ -39,6 +39,6 @@ export default tag Checker
 							<span.content> card.title
 						<[d:hcs]>
 							<button.done @click=State.finishCard(card, yes)> 'Done'
-							<button.missed @click=State.finishCard(card, no)> 'Missed'
+							<button.undone @click=State.finishCard(card, no)> 'Undone'
 
 imba.scheduler

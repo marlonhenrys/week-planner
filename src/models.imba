@@ -15,7 +15,7 @@ export class Card
 	title\string
 	index\number
 	columnId\string
-	status\'pending'|'done'|'missed'|'moved'
+	status\'pending'|'done'|'undone'|'moved'
 
 export class Content
 	activeWeek\string

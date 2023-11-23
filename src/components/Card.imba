@@ -1,6 +1,9 @@
 import type {Card as ICard} from '../models.imba'
 import CardOptions from './CardOptions.imba'
 import State from '../State.imba'
+import trashIcon from '../assets/trash-icon.png'
+import doneIcon from '../assets/done-icon.png'
+import undoneIcon from '../assets/undone-icon.png'
 
 export default tag Card
 	data\ICard
@@ -48,6 +51,7 @@ export default tag Card
 
 	css d:hcs c:cooler6 rd:lg p:2 bd:$color bgc:$color w:100% bxs:sm g:5
 		.content ta:start fs:md-
+		.icon d:hcc
 
 	<self [cursor:grab]=(canMove and pending?) [$color:cooler0] [bgc:gray6/30 c:warmer1]=#dragging
 		draggable=(canMove and pending?)
@@ -60,12 +64,13 @@ export default tag Card
 				css .hide-on-dragging visibility:hidden
 
 			if isNegative
-				<span.hide-on-dragging [c:gray7 rotate:90deg]> '➜'
+				<span.icon.hide-on-dragging> <img[w:20px] src=trashIcon>
+			
 			else
 				switch data.status
 					when 'pending'
 						<CardOptions.hide-on-dragging card=data>
 					when "done"
-						<span.hide-on-dragging [c:green6 fw:bold]> '✓'
-					when "missed"
-						<span.hide-on-dragging [c:red6 fw:bold]> '✗'	
+						<span.icon.hide-on-dragging> <img[w:22px] src=doneIcon>
+					when "undone"
+						<span.icon.hide-on-dragging> <img[w:20px] src=undoneIcon>

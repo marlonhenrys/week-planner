@@ -19,8 +19,8 @@ def weekColumns week, idShift
 		{id: "5000", title: 'Thursday', index: 4, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
 		{id: "6000", title: 'Friday', index: 5, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
 		{id: "7000", title: 'Saturday', index: 6, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-		{id: "8000", title: 'Next week', index: 7, limit: 7, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "lime1"}
-		{id: "9000", title: 'Gave up', index: 8, limit: 5, status: 'open', week, toFill: false, canAdd: no, canMoveOut: no, color: "purple1"}
+		{id: "8000", title: 'Next Week', index: 7, limit: 7, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "lime1"}
+		{id: "9000", title: 'To Give Up', index: 8, limit: 5, status: 'open', week, toFill: false, canAdd: no, canMoveOut: no, color: "purple1"}
 	].map do(column\Column) 
 		column.id = String(parseInt(column.id) + idShift + 1)
 		return column
@@ -51,7 +51,7 @@ class State
 
 		card.columnId = toColumnId
 		card.index = dropIndex or getLastColumnIndex(toColumnId) + 1
-		card.status = 'missed' if column.index is 8
+		card.status = 'undone' if column.index is 8
 
 		Store.saveCard card
 
@@ -104,7 +104,7 @@ class State
 
 	def getColumnSnapshot columnId\string
 		const cards = getColumnCards columnId
-		const initialState = {done: 0, pending: 0, missed: 0}
+		const initialState = {done: 0, pending: 0, undone: 0}
 		cards.reduce(&, initialState) do(state, c\Card)
 			{...state, [c.status]: ++state[c.status]}
 
@@ -192,7 +192,7 @@ class State
 		cardsToFinish.sort do parseInt($1.columnId) - parseInt($2.columnId)
 
 	def finishCard card\Card, isDone\boolean
-		card.status = isDone ? 'done' : 'missed'
+		card.status = isDone ? 'done' : 'undone'
 		Store.saveCard card
 
 		cardsToFinish = cardsToFinish.filter do $1.id isnt card.id
