@@ -1,6 +1,6 @@
 import State from '../State.imba'
 import type { Card } from '../models.imba'
-import moveIcon from '../assets/move-icon.png'
+import optionIcon from '../assets/option-icon.png'
 
 export default tag CardOptions
 	card\Card
@@ -35,10 +35,11 @@ export default tag CardOptions
 		.row d:hcs g:2
 		.line d:hcl g:1
 		h3 m:0 c:warm7 tof:ellipsis of:hidden ws:nowrap
-		input appearance:none w:1.2em h:1.2em bgc:cool3 rd:full d:hcc
+		label cursor:pointer
+		input appearance:none w:1.2em h:1.2em bgc:cool3 rd:full d:hcc cursor:pointer
 			@checked bgc:indigo5
-				@after c:warmer1 content:"~" fw:bold
-		.btn as:flex-end rd:md c:warm1 bd:1px solid px:2 py:1 fw:bold ls:1.2 w:100%
+				@before content:'~' fw:bold c:warmer1
+		.btn as:flex-end rd:md c:warm1 bd:1px solid px:2 py:1 fw:bold ls:1.2 w:100% cursor:pointer
 		.move bgc:indigo6 bc:indigo6
 			@hover bgc:indigo7 bc:indigo7
 			@focus olc:indigo7
@@ -54,10 +55,10 @@ export default tag CardOptions
 		.hold
 			.bar w:0% tween:all 1.3s ease
 
-	css .open bgc:transparent rd:md bd:none d:hcc p:0 bd:1px solid transparent bgc:cooler2 p:0.4
-		.icon w:18px rotate:90deg filter:contrast(10%)
+	css .open bgc:transparent rd:full bd:none d:hcc bd:1px solid transparent bgc:cooler1 p:0 rotate:90deg cursor:pointer
+		.icon w:19px filter:contrast(20%)
 		@focus olc:cooler4
-		@hover bgc:cooler3
+		@hover bgc:cooler2
 
 	<self>
 		<dialog$dialog @keydown.esc.prevent=close>
@@ -65,7 +66,7 @@ export default tag CardOptions
 				<.row>
 					<h3> card.title 
 					<button.close @click=close> '✖'
-				<span[m:0 c:indigo6]> 'Available columns:'
+				<span[m:0 c:indigo6 fw:bold]> 'Available columns:'
 				<%group>
 					<form.container @submit.prevent=move>
 						if otherAvailableColumns.length is 0
@@ -82,4 +83,4 @@ export default tag CardOptions
 							<button.btn.done @touch.flag('hold', '.action').hold(duration=1s)=done> "Mark as done"
 							<.bar>
 
-		<button$openBtn.open @click=open> <img.icon src=moveIcon>
+		<button$openBtn.open @click=open> <img.icon src=optionIcon>

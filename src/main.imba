@@ -4,7 +4,7 @@ import State from './State.imba'
 
 global css body ff:sans bgc:warmer1 box-sizing:border-box w:100% mih:100vh m:0 p:0
 	.hidden visibility:hidden
-	.close as:flex-end bd:none bgc:transparent c:rose5 @hover:rose6 fs:1xl
+	.close as:flex-end bd:none bgc:transparent c:rose5 @hover:rose6 fs:1xl cursor:pointer
 		@focus olc:red4
 
 tag App

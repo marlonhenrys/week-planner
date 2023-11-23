@@ -107,7 +107,7 @@ export default tag Column
 
 		<h2> data.title
 
-		<span [c:gray5 mb:2]> lengthViewer
+		<span [c:gray5 mb:2 mt:-1 fs:xl ls:6 cursor:default]> lengthViewer
 
 		<global @dragenter.outside=(#hovering = no)>
 	
@@ -124,4 +124,4 @@ export default tag Column
 		if active?
 			<CardAdder [visibility:hidden]=(not data.canAdd or full? or State.draggingCard?) columnId=data.id>
 		else
-			<span [d:hcc fs:sm h:30px c:gray5 fw:bold]> closedMessage
+			<span [d:hcc fs:sm h:30px mt:1 c:gray5 fw:bold]> closedMessage

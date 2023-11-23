@@ -163,6 +163,9 @@ class State
 		distributeNextWeekColumn nextWeekColumn, currentDayIndex, newWeekIndex if nextWeekColumn
 
 	def checkHistory
+		migrateColumns!
+		migrateCards!
+		
 		const currentWeekIndex = currentWeek!
 		const currentDayIndex = (new Date).getDay!
 
@@ -196,6 +199,31 @@ class State
 		Store.saveCard card
 
 		cardsToFinish = cardsToFinish.filter do $1.id isnt card.id
+
+	def migrateColumns
+		content.columns.forEach do(column\Column)
+			let wasChanged = no
+
+			if column.title is 'Next week'
+				column.title = 'Next Week'
+				wasChanged = yes
+
+			if column.title is 'Gave up'
+				column.title = 'To Give Up'
+				wasChanged = yes
+
+			Store.saveColumn column if wasChanged
+
+	def migrateCards
+		content.cards.forEach do(card\Card)
+			let wasChanged = no
+
+			if card.status is 'missed'
+				card.status = 'undone'
+				wasChanged = yes
+
+			Store.saveCard card if wasChanged
+
 
 const state = new State
 export default state

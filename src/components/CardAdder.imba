@@ -30,12 +30,12 @@ export default tag CardAdder
 		label fw:bold c:warm5
 		textarea rd:lg bgc:cool1 bd:1px solid cool3 px:3 py:1 resize:none ff:sans lh:1.5
 			@focus olc:indigo3
-		.save as:flex-end rd:md bgc:indigo6 c:warm1 bd:1px solid indigo6 px:2 py:1 fw:bold ls:1.2 w:100%
+		.save as:flex-end rd:md bgc:indigo6 c:warm1 bd:1px solid indigo6 px:2 py:1 fw:bold ls:1.2 w:100% cursor:pointer
 			@hover bgc:indigo7
 			@focus olc:indigo3
 		.disabled pe:none o:20%
 
-	css .open bgc:transparent p:5px rd:lg bd:1px dashed cooler4 c:cooler5 w:100%
+	css .open bgc:transparent p:5px rd:lg bd:1px dashed cooler4 c:cooler5 w:100% cursor:pointer
 		@focus bc:cooler5 ol:clear
 		@hover bgc:cooler0
 
