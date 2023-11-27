@@ -2,6 +2,8 @@ import type { Column as IColumn } from '../models.imba'
 import Card from './Card.imba'
 import CardAdder from './CardAdder.imba'
 import State from '../State.imba'
+import closedStarIcon from '../assets/closed-star-icon.png'
+import openStarIcon from '../assets/open-star-icon.png'
 
 export default tag Column
 	data\IColumn
@@ -43,19 +45,20 @@ export default tag Column
 	
 	get closedMessage
 		return 'Amazing  🤩' if status is 'completed' and length is data.limit
+		return 'Good  🫡' if status is 'completed' and length is 1
 			
 		switch status
 			when 'completed' then 'Great  😊'
 			when 'almost' then 'Almost  😅'
 			when 'far' then 'Okay  😐'
-			when 'none' then 'My bad  ☹️'
+			when 'none' then 'My bad  🫠'
 			when 'empty' then 'Oh no  🫣'
 
 	get lengthViewer
 		if data.toFill
-			"★".repeat(length) + "☆".repeat(data.limit - length)
+			[length, (data.limit - length)]
 		else
-			"★".repeat(data.limit - length) + "☆".repeat(length)
+			[(data.limit - length), length]
 
 	def isHoveringBefore card
 		#hovering and not full? and card.id is State.hoveringCardId and State.dropIndex is card.index
@@ -94,7 +97,7 @@ export default tag Column
 		State.moveCard draggingCard, data.id
 		#hovering = no
 
-	css d:vcc bgc:$color bc:black px:4 py:3 rd:md g:2 bxs:md w@lt-sm:250px w@350:300px w@lg:220px tween:all 1s ease
+	css d:vcc bgc:$color bc:black px:4 py:3 rd:md g:2 bxs:md w@lt-sm:250px w@350:300px w@700:250px w@lg:15.15% tween:all 1s ease
 		h2 m:0 c:warm6 cursor:default
 		.drop-area d:hcc c:gray5 fw:bold m:0 w:105% bd:1px dashed gray5 rd:lg
 
@@ -107,7 +110,9 @@ export default tag Column
 
 		<h2> data.title
 
-		<span [c:gray5 mb:2 mt:-1 fs:xl ls:6 cursor:default]> lengthViewer
+		<%star-viewer [d:hcc g:0.5 mb:2 cursor:default]>
+			<img [w:19px filter:contrast(20%)] key="c{i}" src=closedStarIcon> for i in [0 ... lengthViewer[0]]
+			<img [w:17.3px p:1px filter:contrast(20%)] key="o{j}" src=openStarIcon> for j in [0 ... lengthViewer[1]]
 
 		<global @dragenter.outside=(#hovering = no)>
 	

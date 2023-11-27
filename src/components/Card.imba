@@ -64,7 +64,7 @@ export default tag Card
 				css .hide-on-dragging visibility:hidden
 
 			if isNegative
-				<span.icon.hide-on-dragging> <img[w:20px] src=trashIcon>
+				<span.icon.hide-on-dragging> <img[w:19px] src=trashIcon>
 			
 			else
 				switch data.status

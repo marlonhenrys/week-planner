@@ -1,6 +1,7 @@
 import State from '../State.imba'
 import type { Card } from '../models.imba'
 import optionIcon from '../assets/option-icon.png'
+import selectedIcon from '../assets/selected-icon.png'
 
 export default tag CardOptions
 	card\Card
@@ -30,15 +31,13 @@ export default tag CardOptions
 		State.completeCard card
 		self.close!
 
-	css dialog bd:cooler2 bgc:warmer1 w@lt-sm:250px w@350:300px w@lg:250px bxs:lg rd:lg cursor:default
+	css dialog bd:cooler2 bgc:warmer1 w@lt-sm:250px w@350:300px w@700:250px w@lg:18% bxs:lg rd:lg cursor:default
 		.container d:vflex g:4
 		.row d:hcs g:2
-		.line d:hcl g:1
 		h3 m:0 c:warm7 tof:ellipsis of:hidden ws:nowrap
-		label cursor:pointer
-		input appearance:none w:1.2em h:1.2em bgc:cool3 rd:full d:hcc cursor:pointer
-			@checked bgc:indigo5
-				@before content:'~' fw:bold c:warmer1
+		label cursor:pointer d:hcl g:2
+		.checker rd:sm bgc:cool3 s:16px
+		.checked bgc:indigo5
 		.btn as:flex-end rd:md c:warm1 bd:1px solid px:2 py:1 fw:bold ls:1.2 w:100% cursor:pointer
 		.move bgc:indigo6 bc:indigo6
 			@hover bgc:indigo7 bc:indigo7
@@ -58,7 +57,7 @@ export default tag CardOptions
 	css .open bgc:transparent rd:full bd:none d:hcc bd:1px solid transparent bgc:cooler1 p:0 rotate:90deg cursor:pointer
 		.icon w:19px filter:contrast(20%)
 		@focus olc:cooler4
-		@hover bgc:cooler2
+		@hover bgc:cooler3/60
 
 	<self>
 		<dialog$dialog @keydown.esc.prevent=close>
@@ -72,9 +71,15 @@ export default tag CardOptions
 						if otherAvailableColumns.length is 0
 							<span> "There is no one :("
 						else for column in otherAvailableColumns
-							<.line>
-								<input id=(column.id + card.id) type='radio' name='column' value=column.id bind=toColumnId>
-								<label htmlFor=(column.id + card.id)> column.title
+							const inputId = column.id + card.id
+							const isChecked = toColumnId is column.id
+
+							<label htmlFor=inputId>
+								<input[d:none] id=inputId type='radio' name='column' value=column.id bind=toColumnId>
+								<span.checker .checked=isChecked [d:hcc]> 
+									<img src=selectedIcon [w:20px filter:invert(95%)]> if isChecked
+								<span> column.title
+
 						<button.btn.move .disabled=(toColumnId is null) type='submit'> "Move it!"
 					
 					if forToday?
