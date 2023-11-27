@@ -16,9 +16,9 @@ export default tag Checker
 
 	css d:vtc w:100% g:5
 		.columns d:htc flw:wrap g:8
-		.column d:vflex g:4 rd:lg bgc:violet1 p:2 bxs:sm
+		.column d:vflex g:4 rd:lg bgc:violet1 p:2 bxs:sm w@lt-sm:250px w@350:300px w@700:250px w@lg:300px
 		.column-title m:0 c:warm6 ta:center
-		.card d:hcs c:cooler6 rd:lg p:2 bd:cooler0 bgc:cooler0 w:15.15% bxs:sm g:5
+		.card d:hcs c:cooler6 rd:lg p:2 bd:cooler0 bgc:cooler0 bxs:sm g:5
 		.content w:100% fs:md-
 		button as:flex-end rd:md c:warm6 bd:1px solid fw:bold ls:1.2 p:1 w:49% bxs:sm
 		.done bgc:green1 bc:green1
