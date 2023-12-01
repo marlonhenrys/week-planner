@@ -231,7 +231,7 @@ class State
 			todayColumns = findTodayColumns currentDayIndex, currentWeekIndex
 
 		for column in todayColumns
-			if column.status is 'open'
+			if column.status isnt 'current'
 				column.status = 'current'
 				Store.saveColumn column
 
@@ -244,6 +244,14 @@ class State
 				Store.saveColumn column
 
 		const previousDayColumnIds = (previousColumns.filter do $1.index <= 6).map do $1.id
+
+		const followingColumns = content.columns.filter do(column\Column) 
+			column.index > currentDayIndex and column.week is currentWeekIndex
+		
+		followingColumns.forEach do(column\Column)
+			if column.status isnt 'open'
+				column.status = 'open'
+				Store.saveColumn column
 		
 		cardsToFinish = content.cards.filter do
 			$1.status is 'pending' and previousDayColumnIds.includes($1.columnId)
