@@ -2,7 +2,7 @@ import State from '../State.imba'
 
 export default tag Checker 
 
-	get cardsToFinishByColum
+	get cardsToFinishByColumn
 		const cardsByColumn = {}
 		for card in State.cardsToFinish
 			const column = State.getColumnData(card.columnId)
@@ -12,7 +12,7 @@ export default tag Checker
 		return cardsByColumn
 
 	get daysToFinish
-		Object.keys(cardsToFinishByColum)
+		Object.keys(cardsToFinishByColumn)
 
 	css d:vtc w:100% g:5
 		.columns d:htc flw:wrap g:8
@@ -33,12 +33,10 @@ export default tag Checker
 		<.columns> for columnTitle in daysToFinish
 			<.column>
 				<h3.column-title> columnTitle
-				for card in cardsToFinishByColum[columnTitle]
+				for card in cardsToFinishByColumn[columnTitle]
 					<[d:vflex g:1]>
 						<.card [d:hcc g:2]>
 							<span.content> card.title
 						<[d:hcs]>
 							<button.done @click=State.finishCard(card, yes)> 'Done'
 							<button.undone @click=State.finishCard(card, no)> 'Undone'
-
-imba.scheduler

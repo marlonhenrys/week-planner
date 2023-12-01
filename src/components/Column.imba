@@ -34,7 +34,7 @@ export default tag Column
 
 	get color
 		return 'indigo1' if data.status is 'current'
-		return data.color if data.status is 'open'
+		return data.color if data.status is 'open' or data.index is 7 or data.index is 8
 
 		switch status
 			when 'completed' then 'emerald1'
@@ -44,6 +44,7 @@ export default tag Column
 			when 'empty' then 'cool2'
 	
 	get closedMessage
+		return 'Finished  👍' if data.index is 7 or data.index is 8
 		return 'Amazing  🤩' if status is 'completed' and length is data.limit
 		return 'Good  🫡' if status is 'completed' and length is 1
 			
@@ -97,7 +98,8 @@ export default tag Column
 		State.moveCard draggingCard, data.id
 		#hovering = no
 
-	css d:vcc bgc:$color bc:black px:4 py:3 rd:md g:2 bxs:md w@lt-sm:250px w@350:300px w@700:250px w@lg:15.15% tween:all 1s ease
+	css d:vcc bgc:$color bc:black px:4 py:3 rd:md g:2 bxs:md
+		w@lt-sm:250px w@!300:230px w@350:300px w@700:250px w@lg:15.15% tween:all 1s ease
 		h2 m:0 c:warm6 cursor:default
 		.drop-area d:hcc c:gray5 fw:bold m:0 w:105% bd:1px dashed gray5 rd:lg
 

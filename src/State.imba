@@ -10,20 +10,30 @@ def currentWeek
 	const week = Math.ceil((((now.getTime! - onejan.getTime!) / 86400000) + onejan.getDay! + 1) / 7)
 	return "{currentYear}-{week}"
 
+const boards = 
+	relationship: 'family and friends'
+	home: 'house and pets'
+	legacy: 'work and carrer'
+	future: 'study and self-development'
+	personal: 'fun, health and wellness'
+
 def weekColumns week, idShift
-	[
-		{id: "1000", title: 'Sunday', index: 0, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-		{id: "2000", title: "Monday", index: 1, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-		{id: "3000", title: 'Tuesday', index: 2, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-		{id: "4000", title: 'Wednesday', index: 3, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-		{id: "5000", title: 'Thursday', index: 4, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-		{id: "6000", title: 'Friday', index: 5, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-		{id: "7000", title: 'Saturday', index: 6, limit: 3, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
-		{id: "8000", title: 'Next Week', index: 7, limit: 7, status: 'open', week, toFill: true, canAdd: yes, canMoveOut: yes, color: "lime1"}
-		{id: "9000", title: 'To Give Up', index: 8, limit: 5, status: 'open', week, toFill: false, canAdd: no, canMoveOut: no, color: "purple1"}
-	].map do(column\Column) 
-		column.id = String(parseInt(column.id) + idShift + 1)
-		return column
+
+	Object.keys(boards).flatMap do(board, index)
+		const boardKey = index + 10
+		[
+			{id: "{boardKey}1000", title: 'Sunday', index: 0, limit: 3, status: 'open', week, board, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
+			{id: "{boardKey}2000", title: "Monday", index: 1, limit: 3, status: 'open', week, board, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
+			{id: "{boardKey}3000", title: 'Tuesday', index: 2, limit: 3, status: 'open', week, board, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
+			{id: "{boardKey}4000", title: 'Wednesday', index: 3, limit: 3, status: 'open', week, board, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
+			{id: "{boardKey}5000", title: 'Thursday', index: 4, limit: 3, status: 'open', week, board, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
+			{id: "{boardKey}6000", title: 'Friday', index: 5, limit: 3, status: 'open', week, board, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
+			{id: "{boardKey}7000", title: 'Saturday', index: 6, limit: 3, status: 'open', week, board, toFill: true, canAdd: yes, canMoveOut: yes, color: "sky1"}
+			{id: "{boardKey}8000", title: 'Next Week', index: 7, limit: 7, status: 'open', week, board, toFill: true, canAdd: yes, canMoveOut: yes, color: "lime1"}
+			{id: "{boardKey}9000", title: 'To Give Up', index: 8, limit: 5, status: 'open', week, board, toFill: false, canAdd: no, canMoveOut: no, color: "fuchsia1"}
+		].map do(column\Column) 
+			column.id = String(parseInt(column.id) + idShift + 1)
+			return column
 
 class State
 	content\Content
@@ -33,7 +43,13 @@ class State
 	dropIndex\number = null
 	cardsToFinish\Card[] = []
 
-	def init do content = await Store.loadContent!
+	#selectedWeek\string = null
+
+	isLoadingColumns\boolean = no
+
+	def init
+		content = await Store.loadContent!
+		#selectedWeek = content.activeWeek
 
 	def addCard\void title\string, columnId\string
 		return if isFullColumn columnId
@@ -51,7 +67,7 @@ class State
 
 		card.columnId = toColumnId
 		card.index = dropIndex or getLastColumnIndex(toColumnId) + 1
-		card.status = 'undone' if column.index is 8
+		card.status = 'discarded' if column.index is 8
 
 		Store.saveCard card
 
@@ -80,7 +96,35 @@ class State
 		content.cards.find do $1.id is hoveringCardId
 
 	get availableColumns
-		content.columns.filter do $1.status isnt 'closed' and not isFullColumn($1.id)
+		content.columns.filter do $1.status isnt 'closed' and not isFullColumn($1.id) and $1.board is selectedBoard
+
+	get weeks
+		(Array.from content.weeks).sort!
+
+	get selectedWeek
+		#selectedWeek
+
+	set selectedWeek week
+		#selectedWeek = week
+		const anyWeekColumn = findColumn 1, week
+		if not anyWeekColumn
+			isLoadingColumns = yes
+			Store.loadWeekContent(week).then do([columns, cards])
+				content.columns = content.columns.concat columns
+				content.cards = content.cards.concat cards
+				setTimeout(&, 1s) do
+					isLoadingColumns = no
+					imba.commit!
+
+	get boards
+		Object.entries boards
+
+	get selectedBoard
+		content.selectedBoard
+
+	set selectedBoard board
+		content.selectedBoard = board
+		Store.saveSelectedBoard board
 
 	def getColumnCards columnId\string
 		const cards = content.cards.filter do $1.columnId is columnId
@@ -120,11 +164,15 @@ class State
 		elif (columnState.done / columnLength) >= 0.2 then 'far'
 		else 'none'
 
-	def findTodayColumn currentDayIndex, currentWeekIndex
+	def findColumn dayIndex, weekIndex
 		content.columns.find do(column\Column)
+			column.index is dayIndex and column.week is weekIndex
+
+	def findTodayColumns currentDayIndex, currentWeekIndex
+		content.columns.filter do(column\Column)
 			column.index is currentDayIndex and column.week is currentWeekIndex
 
-	def distributeNextWeekColumn nextWeekColumn, currentDayIndex, newWeekIndex
+	def distributeNextWeekColumns nextWeekColumn\Column, currentDayIndex, newWeekIndex
 		const nextWeekCards = content.cards.filter do $1.columnId is nextWeekColumn.id
 
 		nextWeekCards.forEach do(card\Card)
@@ -135,11 +183,12 @@ class State
 		const sortedNextWeekCards = [...nextWeekCards].sort do $1.index - $2.index
 
 		const unclosedCurrentColumns = content.columns.filter do 
-			$1.week is newWeekIndex and $1.index >= currentDayIndex and $1.index <= 6
+			$1.week is newWeekIndex and $1.index >= currentDayIndex and $1.index <= 6 and $1.board is nextWeekColumn.board 
 		
 		const columnsToDistribute = unclosedCurrentColumns.map do [$1.limit, $1.id]
 		
-		const currentNextWeekColumn = content.columns.find do $1.week is newWeekIndex and $1.index is 7
+		const currentNextWeekColumn = content.columns.find do 
+			$1.week is newWeekIndex and $1.index is 7 and $1.board is nextWeekColumn.board 
 
 		for card, index in sortedNextWeekCards
 			const tuple = columnsToDistribute.find do 
@@ -150,17 +199,23 @@ class State
 
 	def startWeek currentDayIndex, newWeekIndex
 		const previousWeekColumns = content.columns.filter do $1.week is content.activeWeek
-		const previousWeekShift = parseInt previousWeekColumns[0]..id..slice(1)
+		const previousWeekShift = parseInt previousWeekColumns[0]..id..slice(3)
 		const newWeekColumns = weekColumns newWeekIndex, (previousWeekShift or 0)
 		
 		content.activeWeek = newWeekIndex
 		Store.saveActiveWeek newWeekIndex
+		selectedWeek = newWeekIndex
+		content.weeks.add newWeekIndex
+
+		selectedBoard = 'relationship' if not selectedBoard
 
 		content.columns.push(...newWeekColumns)
 		Store.saveManyColumns newWeekColumns
 
-		const nextWeekColumn = previousWeekColumns.find do $1.index is 7 
-		distributeNextWeekColumn nextWeekColumn, currentDayIndex, newWeekIndex if nextWeekColumn
+		const nextWeekColumns = previousWeekColumns.filter do $1.index is 7
+
+		for column in nextWeekColumns
+			distributeNextWeekColumns column, currentDayIndex, newWeekIndex
 
 	def checkHistory
 		migrateColumns!
@@ -169,15 +224,16 @@ class State
 		const currentWeekIndex = currentWeek!
 		const currentDayIndex = (new Date).getDay!
 
-		let todayColumn = findTodayColumn currentDayIndex, currentWeekIndex
+		let todayColumns = findTodayColumns currentDayIndex, currentWeekIndex
 
-		if not todayColumn
+		if todayColumns.length is 0
 			startWeek currentDayIndex, currentWeekIndex
-			todayColumn = findTodayColumn currentDayIndex, currentWeekIndex
+			todayColumns = findTodayColumns currentDayIndex, currentWeekIndex
 
-		if todayColumn.status is 'open'
-			todayColumn.status = 'current'
-			Store.saveColumn todayColumn
+		for column in todayColumns
+			if column.status is 'open'
+				column.status = 'current'
+				Store.saveColumn column
 
 		const previousColumns = content.columns.filter do(column\Column) 
 			column.index < currentDayIndex or column.week < currentWeekIndex
@@ -189,7 +245,7 @@ class State
 
 		const previousDayColumnIds = (previousColumns.filter do $1.index <= 6).map do $1.id
 		
-		cardsToFinish = content.cards.filter do 
+		cardsToFinish = content.cards.filter do
 			$1.status is 'pending' and previousDayColumnIds.includes($1.columnId)
 
 		cardsToFinish.sort do parseInt($1.columnId) - parseInt($2.columnId)
@@ -212,6 +268,10 @@ class State
 				column.title = 'To Give Up'
 				wasChanged = yes
 
+			if column.color is 'purple1'
+				column.color = 'fuchsia1'
+				wasChanged = yes
+
 			Store.saveColumn column if wasChanged
 
 	def migrateCards
@@ -223,6 +283,11 @@ class State
 				wasChanged = yes
 
 			Store.saveCard card if wasChanged
+
+	def checkCode code
+		if code is 'res3t4ll'
+			await Store.resetAll!
+			return global.location.reload!
 
 
 const state = new State

@@ -4,6 +4,7 @@ import State from '../State.imba'
 import trashIcon from '../assets/trash-icon.png'
 import doneIcon from '../assets/done-icon.png'
 import undoneIcon from '../assets/undone-icon.png'
+import movedIcon from '../assets/moved-icon.png'
 
 export default tag Card
 	data\ICard
@@ -12,6 +13,7 @@ export default tag Card
 	isFullColumn\boolean
 
 	#dragging = no
+	#dndBlocked = no
 
 	get pending? do data.status is 'pending'
 
@@ -23,10 +25,14 @@ export default tag Card
 
 	def rendered do showOptions!
 
+	def checkPointer event\PointerEvent
+		#dndBlocked = event.pointerType isnt 'mouse'
+
 	def dragStart
-		hideOptions!
-		State.draggingCardId = data.id
-		#dragging = yes
+		if not #dndBlocked
+			hideOptions!
+			State.draggingCardId = data.id
+			#dragging = yes
 
 	def dragEnd
 		State.draggingCardId = null
@@ -56,6 +62,7 @@ export default tag Card
 	<self [cursor:grab]=(canMove and pending?) [$color:cooler0] [bgc:gray6/30 c:warmer1]=#dragging
 		draggable=(canMove and pending?)
 		@dragstart=dragStart
+		@pointerdown=checkPointer
 		@dragover.if(not isFullColumn).prevent=dragOver
 		@dragend.prevent=dragEnd>
 			<span.content> data.title
@@ -66,11 +73,12 @@ export default tag Card
 			if isNegative
 				<span.icon.hide-on-dragging> <img[w:19px] src=trashIcon>
 			
-			else
-				switch data.status
-					when 'pending'
-						<CardOptions.hide-on-dragging card=data>
-					when "done"
-						<span.icon.hide-on-dragging> <img[w:22px] src=doneIcon>
-					when "undone"
-						<span.icon.hide-on-dragging> <img[w:20px] src=undoneIcon>
+			else switch data.status
+				when 'pending'
+					<CardOptions.hide-on-dragging card=data>
+				when "done"
+					<span.icon.hide-on-dragging> <img[w:22px] src=doneIcon>
+				when "undone"
+					<span.icon.hide-on-dragging> <img[w:20px] src=undoneIcon>
+				when 'moved'
+					<span.icon.hide-on-dragging> <img[w:20px] src=movedIcon>

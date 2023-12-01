@@ -1,5 +1,5 @@
 import './app.css'
-import Column from './components/Column.imba'
+import Board from './components/Board.imba'
 import Checker from './components/Checker.imba'
 import State from './State.imba'
 
@@ -20,13 +20,11 @@ tag App
 
 	def setup do State.checkHistory!
 
-	css d:htc flw:wrap g:15 p:2%
-
 	<self>
 		if State.cardsToFinish.length > 0
 			<Checker>
 		else
-			<Column data=column> for column in State.content.columns when column.week is State.content.activeWeek
+			<Board>
 
 tag Loader
 	def routed do await State.init!
