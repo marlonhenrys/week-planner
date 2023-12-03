@@ -71,13 +71,13 @@ export default tag Card
 				css .hide-on-dragging visibility:hidden
 
 			if isNegative
-				<span.icon.hide-on-dragging> <img[w:19px] src=trashIcon>
+				<span.icon.hide-on-dragging> <img[w:20px] src=trashIcon>
 			
 			else switch data.status
 				when 'pending'
 					<CardOptions.hide-on-dragging card=data>
 				when "done"
-					<span.icon.hide-on-dragging> <img[w:22px] src=doneIcon>
+					<span.icon.hide-on-dragging> <img[w:20px] src=doneIcon>
 				when "undone"
 					<span.icon.hide-on-dragging> <img[w:20px] src=undoneIcon>
 				when 'moved'
