@@ -31,7 +31,7 @@ export default tag CardOptions
 		State.completeCard card
 		self.close!
 
-	css dialog bd:cooler2 bgc:warmer1 w@lt-sm:250px w@350:300px w@700:250px w@lg:18% bxs:lg rd:lg cursor:default
+	css dialog bd:cooler2 bgc:warmer1 w@lt-sm:250px w@350:300px w@700:250px w@xl:18% bxs:lg rd:lg cursor:default
 		.container d:vflex g:4
 		.row d:hcs g:2
 		h3 m:0 c:warm7 tof:ellipsis of:hidden ws:nowrap
@@ -50,7 +50,7 @@ export default tag CardOptions
 			@keyframes open
 				from w:0%
 				to w:100%
-		.bar bgc:green7 rd:full w:100% h:3px tween:all 1.3s ease animation:open 1s
+		.bar bgc:green7 rd:full w:100% h:3px tween:all 1.3s ease animation:open 500ms
 		.hold
 			.bar w:0% tween:all 1.3s ease
 

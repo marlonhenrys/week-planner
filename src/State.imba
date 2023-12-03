@@ -1,14 +1,13 @@
 import type {Content, Card, Column} from './models.imba'
 import Store from './Store.imba'
 
-def uid do (Math.random() + 1).toString(36).substring(6)
+def uid do (Math.random() + 1).toString(36).substring(4)
 
 def currentWeek
 	const now = new Date
-	const currentYear = now.getFullYear!
-	const onejan = new Date(currentYear, 0, 1)
-	const week = Math.ceil((((now.getTime! - onejan.getTime!) / 86400000) + onejan.getDay! + 1) / 7)
-	return "{currentYear}-{week}"
+	const onejan = new Date(2023, 0, 1)
+	const week = Math.ceil((((now.getTime! - onejan.getTime!) / 1days) + onejan.getDay!) / 7)
+	return "{week - 48}"
 
 const boards = 
 	relationship: 'family and friends'
@@ -217,10 +216,7 @@ class State
 		for column in nextWeekColumns
 			distributeNextWeekColumns column, currentDayIndex, newWeekIndex
 
-	def checkHistory
-		migrateColumns!
-		migrateCards!
-		
+	def checkHistory		
 		const currentWeekIndex = currentWeek!
 		const currentDayIndex = (new Date).getDay!
 
@@ -263,34 +259,6 @@ class State
 		Store.saveCard card
 
 		cardsToFinish = cardsToFinish.filter do $1.id isnt card.id
-
-	def migrateColumns
-		content.columns.forEach do(column\Column)
-			let wasChanged = no
-
-			if column.title is 'Next week'
-				column.title = 'Next Week'
-				wasChanged = yes
-
-			if column.title is 'Gave up'
-				column.title = 'To Give Up'
-				wasChanged = yes
-
-			if column.color is 'purple1'
-				column.color = 'fuchsia1'
-				wasChanged = yes
-
-			Store.saveColumn column if wasChanged
-
-	def migrateCards
-		content.cards.forEach do(card\Card)
-			let wasChanged = no
-
-			if card.status is 'missed'
-				card.status = 'undone'
-				wasChanged = yes
-
-			Store.saveCard card if wasChanged
 
 	def checkCode code
 		if code is 'res3t4ll'

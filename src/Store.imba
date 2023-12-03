@@ -1,36 +1,7 @@
 import * as IDB from 'idb-keyval';
 import type { Content, Card, Column } from './models.imba'
 
-def migrateData
-	const entries = await IDB.entries!
-	const oldKeys = entries.map do $1[0]
-	const newEntries = entries.map do([key, val])
-		let newEntry
-
-		if key isa String
-			newEntry = [key, val]
-		elif key[1] is 'column'
-			const newVal = {...val, board: 'personal'}
-			newEntry = [[val.week, 'personal', key[2]], newVal]
-		elif key[1] is 'card'
-			newEntry = [[key[2]], val]
-		elif key.length is 3 and not val.board
-			const newVal = {...val, board: 'personal'}
-			newEntry = [[val.week, 'personal', key[2]], newVal]
-		else
-			return null
-
-		return newEntry
-
-	const filteredNewEntries = (newEntries.filter do $1 isnt null)
-
-	if filteredNewEntries.length > 2
-		IDB.setMany filteredNewEntries
-		IDB.delMany oldKeys
-
 def loadContent\Content
-	migrateData!
-
 	const activeWeek = await IDB.get 'activeWeek'
 	const selectedBoard = await IDB.get 'selectedBoard'
 	const entries = await IDB.entries!

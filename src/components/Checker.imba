@@ -29,7 +29,7 @@ export default tag Checker
 			@focus olc:rose2
 
 	<self> 
-		<h2[c:warm6 ta:center]> "Let's review the previous day{daysToFinish.length > 1 ? 's' : ''}"
+		<h2[c:warm6 ta:center px:1]> "Let's review the previous day{daysToFinish.length > 1 ? 's' : ''}"
 		<.columns> for columnTitle in daysToFinish
 			<.column>
 				<h3.column-title> columnTitle

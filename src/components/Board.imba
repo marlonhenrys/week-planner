@@ -4,10 +4,10 @@ import State from '../State.imba'
 
 export default tag Board
 
-	css d:vcc g:7 pb:5
-		.row d:hcc flw:wrap g:15 g@!700:6 p:4 p@!300:2 w@700:90%
+	css d:vcc g:7 p:5
+		.row d:hcc flw:wrap g:15 g@!700:6 mb:4 p@!300:2
 		label fw:bold
-		.col d:vcl g:2 maw:300px maw@lt-md:400px maw@700:250px w:100%
+		.col d:vcl g:2 w@lt-sm:282px w@!300:262px w@350:332px w@700:282px w@xl:282px
 		select px:1 py:3 bxs:sm rd:md bd:cooler2 w:100% fs:md- bgc:cooler0
 		.columns d:htc flw:wrap g:15 tween:all 2s ease
 

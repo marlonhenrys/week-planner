@@ -99,7 +99,7 @@ export default tag Column
 		#hovering = no
 
 	css d:vcc bgc:$color bc:black px:4 py:3 rd:md g:2 bxs:md
-		w@lt-sm:250px w@!300:230px w@350:300px w@700:250px w@lg:15.15% tween:all 1s ease
+		w@lt-sm:250px w@!300:230px w@350:300px w@700:250px w@xl:18% tween:all 1s ease
 		h2 m:0 c:warm6 cursor:default
 		.drop-area d:hcc c:gray5 fw:bold m:0 w:105% bd:1px dashed gray5 rd:lg
 

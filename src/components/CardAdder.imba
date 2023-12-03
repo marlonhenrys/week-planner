@@ -23,7 +23,7 @@ export default tag CardAdder
 	get placeholder
 		'Learn something new, do a daily task, try a sport, discover a new hobby or anything else...'
 
-	css dialog bd:cooler2 bgc:warmer1 w@lt-sm:250px w@350:300px w@700:250px w@lg:18% bxs:lg rd:lg
+	css dialog bd:cooler2 bgc:warmer1 w@lt-sm:250px w@350:300px w@700:250px w@xl:18% bxs:lg rd:lg
 		.container d:vflex g:4
 		.row d:hcs
 		h3 m:0 c:warm7
