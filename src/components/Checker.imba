@@ -5,7 +5,7 @@ export default tag Checker
 	get cardsToFinishByColumn
 		const cardsByColumn = {}
 		for card in State.cardsToFinish
-			const column = State.getColumnData(card.columnId)
+			const column = State.getColumnData card.columnId
 			const columnName = "{column.title} ({column.week})"
 			cardsByColumn[columnName] = [...(cardsByColumn[columnName] or []), card] 
 
@@ -34,9 +34,9 @@ export default tag Checker
 			<.column>
 				<h3.column-title> columnTitle
 				for card in cardsToFinishByColumn[columnTitle]
-					<[d:vflex g:1]>
+					<%group [d:vflex g:1] id=card.id>
 						<.card [d:hcc g:2]>
 							<span.content> card.title
-						<[d:hcs]>
+						<%options [d:hcs]>
 							<button.done @click=State.finishCard(card, yes)> 'Done'
 							<button.undone @click=State.finishCard(card, no)> 'Undone'
