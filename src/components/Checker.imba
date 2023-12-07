@@ -31,10 +31,10 @@ export default tag Checker
 	<self> 
 		<h2[c:warm6 ta:center px:1]> "Let's review the previous day{daysToFinish.length > 1 ? 's' : ''}"
 		<.columns> for columnTitle in daysToFinish
-			<.column>
+			<.column key=columnTitle>
 				<h3.column-title> columnTitle
 				for card in cardsToFinishByColumn[columnTitle]
-					<%group [d:vflex g:1] id=card.id>
+					<%group [d:vflex g:1] key=card.id>
 						<.card [d:hcc g:2]>
 							<span.content> card.title
 						<%options [d:hcs]>

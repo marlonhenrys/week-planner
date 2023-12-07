@@ -23,15 +23,15 @@ export default tag Board
 			<.col>
 				<label htmlFor='board-select' @dblclick=codePrompt> "Board:"
 				<select id='board-select' bind=State.selectedBoard> for [board, label] in State.boards
-					<option value=board> label
+					<option key=board value=board> label
 
 			<.col>
 				<label htmlFor='week-select'> "Week:"
 				<select id='week-select' bind=State.selectedWeek> for week in State.weeks
-					<option value=week> week
+					<option key=week value=week> week
 
 		if State.isLoadingColumns
 			<span> 'Loading...'
 		else
-			<.columns ease>
-				<Column data=column> for column in State.content.columns when showColumn column
+			<.columns ease> for column in State.content.columns when showColumn column
+				<Column key=column.id data=column>
