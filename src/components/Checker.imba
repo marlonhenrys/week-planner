@@ -6,7 +6,8 @@ export default tag Checker
 		const cardsByColumn = {}
 		for card in State.cardsToFinish
 			const column = State.getColumnData card.columnId
-			const columnName = "{column.title} ({column.week})"
+			const date = State.getColumnDate column.index, parseInt column.week
+			const columnName = "{column.title} ({date})"
 			cardsByColumn[columnName] = [...(cardsByColumn[columnName] or []), card] 
 
 		return cardsByColumn

@@ -1,27 +1,27 @@
 import * as IDB from 'idb-keyval';
 import type { Content, Card, Column } from './models.imba'
 
-def loadContent\Content
-	const activeWeek = await IDB.get 'activeWeek'
-	const selectedBoard = await IDB.get 'selectedBoard'
+def loadContent\Promise<Content>
+	const activeWeek\string = await IDB.get 'activeWeek'
+	const selectedBoard\string = await IDB.get 'selectedBoard'
 	const entries = await IDB.entries!
-	const weeks = new Set
+	const weeks\Set<string> = new Set
 
-	const columns = (entries.filter do([key])
-		return false if key.length isnt 3
-		weeks.add key[0]
-		return true).map do([_, val]) val
-
+	const columnEntries = (entries.filter do(entry\[string[], Column]) entry[0].length is 3)
+	const columns\Column[] = columnEntries.map do $1[1]
 	const columnIds = columns.map do $1.id
-	const cards = (entries.filter do([_, val]) columnIds.includes val.columnId).map do([_, val]) val
+
+	columnEntries.forEach do weeks.add $1[0][0]
+
+	const cards\Card[] = (entries.filter do([_, val]) columnIds.includes val.columnId).map do([_, val]) val
 
 	const content = {activeWeek, selectedBoard, weeks, columns, cards}
 
 	return content
 
-def loadWeekContent requestedWeek
+def loadWeekContent\Promise<[Column[], Card[]]> requestedWeek\string
 	const entries = await IDB.entries!
-	const columns = (entries.filter do([[week]]) week is requestedWeek).map do([_, val]) val
+	const columns = (entries.filter do(entry\[string[], Column]) entry[0][0] is requestedWeek).map do([_, val]) val
 	const columnIds = columns.map do $1.id
 	const cards = (entries.filter do([_, val]) columnIds.includes val.columnId).map do([_, val]) val
 

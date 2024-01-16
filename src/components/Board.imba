@@ -1,4 +1,4 @@
-import type {Card as ICard} from '../models.imba'
+import type { Column as IColumn} from '../models.imba'
 import Column from './Column.imba'
 import State from '../State.imba'
 
@@ -11,7 +11,7 @@ export default tag Board
 		select px:1 py:3 bxs:sm rd:md bd:cooler2 w:100% fs:md- bgc:cooler0
 		.columns d:htc flw:wrap g:15 tween:all 2s ease
 
-	def showColumn column\Column
+	def showColumn column\IColumn
 		column.week is State.selectedWeek and column.board is State.selectedBoard
 
 	def codePrompt
@@ -28,7 +28,7 @@ export default tag Board
 			<.col>
 				<label htmlFor='week-select'> "Week:"
 				<select id='week-select' bind=State.selectedWeek> for week in State.weeks
-					<option key=week value=week> week
+					<option key=week value=week> State.getWeekDateRange parseInt(week)
 
 		if State.isLoadingColumns
 			<span> 'Loading...'

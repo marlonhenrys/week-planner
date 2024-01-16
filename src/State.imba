@@ -16,7 +16,7 @@ const boards =
 	future: 'study and self-development'
 	personal: 'fun, health and wellness'
 
-def weekColumns week, idShift
+def weekColumns week\string, idShift\number
 
 	Object.keys(boards).flatMap do(board, index)
 		const boardKey = index + 10
@@ -54,7 +54,7 @@ class State
 		return if isFullColumn columnId
 
 		const index = getLastColumnIndex(columnId) + 1
-		const card = {index, title, columnId, id: uid!, status: 'pending'}
+		const card\Card = {index, title, columnId, id: uid!, status: 'pending'}
 		
 		content.cards.push card
 		Store.saveCard card
@@ -129,6 +129,14 @@ class State
 		const cards = content.cards.filter do $1.columnId is columnId
 		cards.sort do $1.index - $2.index
 
+	def getColumnDate dayIndex\number, weekIndex\number
+		const initialDate = new Date(2023, 11, 3)
+		initialDate.setDate! initialDate.getDate! + dayIndex + (weekIndex - 1) * 7
+		initialDate.toLocaleDateString!
+
+	def getWeekDateRange weekIndex\number
+		"{getColumnDate 0, weekIndex} - {getColumnDate 6, weekIndex}"
+
 	def getColumnData columnId\string
 		content.columns.find do $1.id is columnId
 
@@ -136,10 +144,10 @@ class State
 		content.cards.reduce(&, 0) do(counter, c\Card) 
 			if c.columnId is columnId then ++counter else counter
 
-	def getLastColumnIndex columnId\number
+	def getLastColumnIndex columnId\string
 		Math.max(0, ...getColumnCards(columnId).map do $1.index)
 
-	def isFullColumn columnId\number
+	def isFullColumn columnId\string
 		const column = getColumnData columnId
 		const columnLength = getColumnLength columnId
 				
@@ -152,7 +160,6 @@ class State
 			{...state, [c.status]: ++state[c.status]}
 
 	def getColumnSummary columnId\string
-		const column = getColumnData columnId
 		const columnState = getColumnSnapshot columnId
 		const columnLength = getColumnLength columnId
 		
@@ -184,19 +191,22 @@ class State
 		const unclosedCurrentColumns = content.columns.filter do 
 			$1.week is newWeekIndex and $1.index >= currentDayIndex and $1.index <= 6 and $1.board is nextWeekColumn.board 
 		
-		const columnsToDistribute = unclosedCurrentColumns.map do [$1.limit, $1.id]
+		const columnsToDistribute\[number, string][] = unclosedCurrentColumns.map do [$1.limit, $1.id]
 		
 		const currentNextWeekColumn = content.columns.find do 
 			$1.week is newWeekIndex and $1.index is 7 and $1.board is nextWeekColumn.board 
 
 		for card, index in sortedNextWeekCards
-			const tuple = columnsToDistribute.find do 
-				$1[0] > 0 and $2 >= (index % unclosedCurrentColumns.length)
-				
-			tuple[0]-- if tuple
-			addCard card.title, (tuple ? tuple[1] : currentNextWeekColumn.id)
+			const availableColumn = columnsToDistribute.find do([limit], idx)
+				limit > 0 and idx >= (index % unclosedCurrentColumns.length)
+			
+			if availableColumn
+				availableColumn[0] -= 1 
+				addCard card.title, availableColumn[1]
+			else
+				addCard card.title, currentNextWeekColumn.id
 
-	def startWeek currentDayIndex, newWeekIndex
+	def startWeek currentDayIndex\number, newWeekIndex\string
 		const previousWeekColumns = content.columns.filter do $1.week is content.activeWeek
 		const previousWeekShift = parseInt previousWeekColumns[0]..id..slice(3)
 		const newWeekColumns = weekColumns newWeekIndex, (previousWeekShift or 0)
@@ -260,7 +270,7 @@ class State
 
 		cardsToFinish = cardsToFinish.filter do $1.id isnt card.id
 
-	def checkCode code
+	def checkCode code\string
 		if code is 'res3t4ll'
 			await Store.resetAll!
 			return global.location.reload!

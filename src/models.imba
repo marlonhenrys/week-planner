@@ -21,6 +21,6 @@ export class Card
 export class Content
 	activeWeek\string
 	selectedBoard\string
-	weeks\string[]
+	weeks\Set<string>
 	columns\Column[]
 	cards\Card[]

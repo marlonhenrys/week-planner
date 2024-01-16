@@ -16,6 +16,10 @@ export default tag Column
 
 	get cards do State.getColumnCards data.id
 
+	get date do State.getColumnDate data.index, parseInt data.week
+	
+	get weekDateRange do State.getWeekDateRange parseInt(data.week) + 1
+
 	get status do State.getColumnSummary data.id
 
 	get length do State.getColumnLength data.id
@@ -111,6 +115,11 @@ export default tag Column
 		css .drop-area h:{draggingCardHeight}px
 
 		<h2> data.title
+
+		if data.index < 7
+			<span[fs:sm c:warm7 mt:-2]> date
+		elif data.index is 7
+			<span[fs:sm c:warm7 mt:-2]> weekDateRange
 
 		<%star-viewer [d:hcc g:0.5 mb:2 cursor:default]>
 			<img [w:19px filter:contrast(20%)] key="c{i}" src=closedStarIcon> for i in [0 ... lengthViewer[0]]
