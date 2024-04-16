@@ -31,7 +31,7 @@ export default tag Column
 	get draggingCardHeight do
 		const draggingElement = document.getElementById(State.draggingCardId)
 
-		return 35 if not draggingElement
+		return 35 unless draggingElement
 
 		const elementRect = draggingElement.getBoundingClientRect!
 		elementRect.height
@@ -72,11 +72,12 @@ export default tag Column
 		#hovering and not full? and card.id is State.hoveringCardId and State.dropIndex > card.index
 
 	def dragEnter
-		#hovering = yes
-		const hoveringCard = State.hoveringCard
-		if hoveringCard..columnId isnt data.id
-			State.hoveringCardId = null
-			State.dropIndex = null
+		if active?
+			#hovering = yes
+			const hoveringCard = State.hoveringCard
+			if hoveringCard..columnId isnt data.id
+				State.hoveringCardId = null
+				State.dropIndex = null
 
 	def drop
 		return if not State.hoveringCard? and cards.length isnt 0

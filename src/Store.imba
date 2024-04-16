@@ -6,6 +6,7 @@ def loadContent\Promise<Content>
 	const selectedBoard\string = await IDB.get 'selectedBoard'
 	const entries = await IDB.entries!
 	const weeks\Set<string> = new Set
+	const weeksSample\Set<string> = new Set
 
 	const columnEntries = (entries.filter do(entry\[string[], Column]) entry[0].length is 3)
 	const columns\Column[] = columnEntries.map do $1[1]
@@ -13,9 +14,11 @@ def loadContent\Promise<Content>
 
 	columnEntries.forEach do weeks.add $1[0][0]
 
+	(Array.from(weeks).map(do parseInt $1).sort!.slice 0, 5).forEach do weeksSample.add $1.toString!
+
 	const cards\Card[] = (entries.filter do([_, val]) columnIds.includes val.columnId).map do([_, val]) val
 
-	const content = {activeWeek, selectedBoard, weeks, columns, cards}
+	const content = {activeWeek, selectedBoard, weeks: weeksSample, columns, cards}
 
 	return content
 

@@ -54,7 +54,7 @@ class State
 		return if isFullColumn columnId
 
 		const index = getLastColumnIndex(columnId) + 1
-		const card\Card = {index, title, columnId, id: uid!, status: 'pending'}
+		const card\Card = {index, title, columnId, description: null, id: uid!, status: 'pending', createdAt: Date.now!}
 		
 		content.cards.push card
 		Store.saveCard card
@@ -82,6 +82,16 @@ class State
 		card.status = 'done'
 		Store.saveCard card
 
+	def giveUpCard\void card\Card, toColumnId\string
+		card.columnId = toColumnId
+		card.status = 'discarded'
+		Store.saveCard card
+
+	def upsertCardInfo\void card\Card, title\string, description\string
+		card.title = title
+		card.description = description
+		Store.saveCard card
+
 	get draggingCard?
 		draggingCardId isnt null
 
@@ -106,7 +116,7 @@ class State
 	set selectedWeek week
 		#selectedWeek = week
 		const anyWeekColumn = findColumn 1, week
-		if not anyWeekColumn
+		unless anyWeekColumn
 			isLoadingColumns = yes
 			Store.loadWeekContent(week).then do([columns, cards])
 				content.columns = content.columns.concat columns
@@ -216,7 +226,7 @@ class State
 		selectedWeek = newWeekIndex
 		content.weeks.add newWeekIndex
 
-		selectedBoard = 'relationship' if not selectedBoard
+		selectedBoard = 'relationship' unless selectedBoard
 
 		content.columns.push(...newWeekColumns)
 		Store.saveManyColumns newWeekColumns

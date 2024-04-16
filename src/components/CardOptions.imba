@@ -1,3 +1,4 @@
+import CardEditor from './CardEditor.imba'
 import State from '../State.imba'
 import type { Card } from '../models.imba'
 import optionIcon from '../assets/option-icon.png'
@@ -7,8 +8,15 @@ export default tag CardOptions
 	card\Card
 	toColumnId\string = null
 
+	#giveUpColumnId\string
+
 	get otherAvailableColumns
-		State.availableColumns.filter do $1.id isnt card.columnId
+		State.availableColumns.filter do(column)
+			#giveUpColumnId = column.id if column.index is 8
+			column.id isnt card.columnId and column.index isnt 8
+		
+	get someAvailableColumn?
+		otherAvailableColumns.length > 0
 
 	get forToday?
 		const column = State.getColumnData card.columnId
@@ -31,6 +39,10 @@ export default tag CardOptions
 		State.completeCard card
 		self.close!
 
+	def giveUp
+		State.giveUpCard card, #giveUpColumnId
+		self.close!
+
 	css dialog bd:cooler2 bgc:warmer1 w@lt-sm:250px w@350:300px w@700:250px w@xl:18% bxs:lg rd:lg cursor:default
 		.container d:vflex g:4
 		.row d:hcs g:2
@@ -46,11 +58,14 @@ export default tag CardOptions
 		.done bgc:green6 bc:green6
 			@hover bgc:green7 bc:green7
 			@focus olc:green7
+		.give-up bgc:pink6 bc:pink6
+			@hover bgc:pink7 bc:pink7
+			@focus olc:pink7
 		.action d:vcc g:1
 			@keyframes open
 				from w:0%
 				to w:100%
-		.bar bgc:green7 rd:full w:100% h:3px tween:all 1.3s ease animation:open 500ms
+		.bar rd:full w:100% h:4px mt:-0.5 tween:all 1.3s ease animation:open 500ms
 		.hold
 			.bar w:0% tween:all 1.3s ease
 
@@ -63,29 +78,38 @@ export default tag CardOptions
 		<dialog$dialog @keydown.esc.prevent=close>
 			<.container>
 				<.row>
-					<h3> card.title 
+					<h3> card.title
 					<button.close @click=close> '✖'
-				<span[m:0 c:indigo6 fw:bold]> 'Available columns:'
+
+				<CardEditor card=card>
+
+				if someAvailableColumn?
+					<span[m:0 c:indigo6 fw:bold]> 'Move to' 
+						<i[fs:sm- c:cool4]> ' (available columns)'
+
 				<%group>
-					<form.container @submit.prevent=move>
-						if otherAvailableColumns.length is 0
-							<span> "There is no one :("
-						else for column in otherAvailableColumns
-							const inputId = column.id + card.id
-							const isChecked = toColumnId is column.id
+					if someAvailableColumn?
+						<form.container @submit.prevent=move>
+							for column in otherAvailableColumns
+								const inputId = column.id + card.id
+								const isChecked = toColumnId is column.id
 
-							<label htmlFor=inputId>
-								<input[d:none] id=inputId type='radio' name='column' value=column.id bind=toColumnId>
-								<span.checker .checked=isChecked [d:hcc]> 
-									<img src=selectedIcon [w:20px filter:invert(95%)]> if isChecked
-								<span> column.title
+								<label htmlFor=inputId>
+									<input[d:none] id=inputId type='radio' name='column' value=column.id bind=toColumnId>
+									<span.checker .checked=isChecked [d:hcc]> 
+										<img src=selectedIcon [w:20px filter:invert(95%)]> if isChecked
+									<span> column.title
 
-						<button.btn.move .disabled=(toColumnId is null) type='submit'> "Move it!"
-					
+							<button.btn.move [my:1 py:1.3] .disabled=(toColumnId is null) type='submit'> "Move it!"
+
+					if #giveUpColumnId
+						<.action [my:2]>
+							<button.btn.give-up @touch.flag('hold', '.action').hold(duration=1s)=giveUp> "Give up"
+							<.bar [bgc:pink7]>
+
 					if forToday?
-						<span [d:hcc mb:4px c:cool6]> 'or'
 						<.action>
 							<button.btn.done @touch.flag('hold', '.action').hold(duration=1s)=done> "Mark as done"
-							<.bar>
+							<.bar [bgc:green7]>
 
 		<button$openBtn.open @click=open> <img.icon src=optionIcon>

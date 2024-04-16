@@ -14,9 +14,11 @@ export class Column
 export class Card
 	id\string
 	title\string
+	description\string|null
 	index\number
 	columnId\string
 	status\'pending'|'done'|'undone'|'moved'|'discarded'
+	createdAt\number
 
 export class Content
 	activeWeek\string

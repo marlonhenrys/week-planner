@@ -1,14 +1,17 @@
 import State from '../State.imba'
 
+const titlePlaceholder = 'Learn something new, do a daily task, try a sport, discover a new hobby or anything else...'
+
 export default tag CardAdder
 	columnId\string
 	content\string = ''
-
-	get valid? do content.trim!.length > 0 and content.trim!.length <= 180
+	
+	get validTitle?
+		content.trim!.length > 0 and content.trim!.length <= 180
 
 	def open
 		$dialog.showModal!
-		$input.focus!
+		$tinput.focus!
 
 	def close
 		$dialog.close!
@@ -16,12 +19,10 @@ export default tag CardAdder
 		content = ''
 
 	def save
-		if valid?
-			State.addCard content.trim!, columnId
+		if validTitle?
+			const title = content.trim!
+			State.addCard title, columnId
 			self.close!
-
-	get placeholder
-		'Learn something new, do a daily task, try a sport, discover a new hobby or anything else...'
 
 	css dialog bd:cooler2 bgc:warmer1 w@lt-sm:250px w@350:300px w@700:250px w@xl:18% bxs:lg rd:lg
 		.container d:vflex g:4
@@ -39,15 +40,17 @@ export default tag CardAdder
 		@focus bc:cooler5 ol:clear
 		@hover bgc:cooler0
 
-	<self[w:105%]>
+	<self[w:105%] id=columnId>
 		<dialog$dialog @keydown.esc.prevent=close>
 			<.container>
 				<.row>
 					<h3> 'I am going to...'
 					<button.close @click=close> '✖'
+
 				<form.container @submit.prevent=save>
-					<textarea$input name='title' placeholder=placeholder rows=5 bind=content>
-					<span [mt:-3 fs:xs c:gray5]> "* Describe in up to 180 characters"
-					<button.save .disabled=(not valid?) type='submit'> "That's it!"
-				
-		<button$openBtn.open [bgc:cool1]=$dialog.open @click=open> if $dialog.open then 'Thinking...' else 'I am going to...'
+					<textarea$tinput name='title' placeholder=titlePlaceholder rows=5 bind=content>
+					<span [fs:xs c:gray5 mt:-3]> "* Describe in up to 180 characters"
+
+					<button.save .disabled=(not validTitle?) type='submit'> "That's it!"
+
+		<button$openBtn.open [bgc:cool1]=$dialog.open @click=open> $dialog.open ? 'Thinking...' : 'I am going to...'

@@ -1,5 +1,6 @@
 import type {Card as ICard} from '../models.imba'
 import CardOptions from './CardOptions.imba'
+import CardEditor from './CardEditor.imba'
 import State from '../State.imba'
 import trashIcon from '../assets/trash-icon.png'
 import doneIcon from '../assets/done-icon.png'
@@ -29,7 +30,7 @@ export default tag Card
 		#dndBlocked = event.pointerType isnt 'mouse'
 
 	def dragStart
-		if not #dndBlocked
+		unless #dndBlocked
 			hideOptions!
 			State.draggingCardId = data.id
 			#dragging = yes
@@ -57,7 +58,8 @@ export default tag Card
 
 	css d:hcs c:cooler6 rd:lg p:2 bd:$color bgc:$color w:100% bxs:sm g:5
 		.content ta:start fs:md-
-		.icon d:hcc
+		.icon d:hcc cursor:pointer
+			@hover bgc:cooler3 rd:full p:0.1
 
 	<self [cursor:grab]=(canMove and pending?) [$color:cooler0] [bgc:gray6/30 c:warmer1]=#dragging
 		draggable=(canMove and pending?)
@@ -77,8 +79,11 @@ export default tag Card
 				when 'pending'
 					<CardOptions.hide-on-dragging card=data>
 				when "done"
-					<span.icon.hide-on-dragging> <img[w:20px] src=doneIcon>
+					<CardEditor card=data>
+						<span.icon.hide-on-dragging> <img[w:20px] src=doneIcon>
 				when "undone"
-					<span.icon.hide-on-dragging> <img[w:20px] src=undoneIcon>
+					<CardEditor card=data> 
+						<span.icon.hide-on-dragging> <img[w:20px] src=undoneIcon>
 				when 'moved'
-					<span.icon.hide-on-dragging> <img[w:20px] src=movedIcon>
+					<CardEditor card=data> 
+						<span.icon.hide-on-dragging> <img[w:20px] src=movedIcon>
