@@ -3,6 +3,7 @@ import State from '../State.imba'
 import type { Card } from '../models.imba'
 import optionIcon from '../assets/option-icon.png'
 import selectedIcon from '../assets/selected-icon.png'
+import closeIcon from '../assets/close-icon.png'
 
 export default tag CardOptions
 	card\Card
@@ -79,7 +80,7 @@ export default tag CardOptions
 			<.container>
 				<.row>
 					<h3> card.title
-					<button.close @click=close> '✖'
+					<button.close @click=close> <img[w:14px] src=closeIcon>
 
 				<CardEditor card=card>
 

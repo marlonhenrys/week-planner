@@ -113,6 +113,13 @@ class State
 	get selectedWeek
 		#selectedWeek
 
+	get todayColumns
+		content.columns.filter do $1.status is 'current'
+
+	get todayCards
+		const todayColumnIds = todayColumns.map do $1.id
+		content.cards.filter do $1.columnId in todayColumnIds
+
 	set selectedWeek week
 		#selectedWeek = week
 		const anyWeekColumn = findColumn 1, week
@@ -134,6 +141,9 @@ class State
 	set selectedBoard board
 		content.selectedBoard = board
 		Store.saveSelectedBoard board
+
+	def getBoardTitle board\string
+		boards[board]
 
 	def getColumnCards columnId\string
 		const cards = content.cards.filter do $1.columnId is columnId

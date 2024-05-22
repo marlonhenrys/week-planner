@@ -1,4 +1,5 @@
 import State from '../State.imba'
+import closeIcon from '../assets/close-icon.png'
 
 const titlePlaceholder = 'Learn something new, do a daily task, try a sport, discover a new hobby or anything else...'
 
@@ -45,7 +46,7 @@ export default tag CardAdder
 			<.container>
 				<.row>
 					<h3> 'I am going to...'
-					<button.close @click=close> '✖'
+					<button.close @click=close> <img[w:14px] src=closeIcon>
 
 				<form.container @submit.prevent=save>
 					<textarea$tinput name='title' placeholder=titlePlaceholder rows=5 bind=content>

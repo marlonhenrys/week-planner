@@ -1,13 +1,14 @@
 import CardAdder from './CardAdder.imba'
 import State from '../State.imba'
 import type { Card } from '../models.imba'
+import closeIcon from '../assets/close-icon.png'
 
 const titlePlaceholder = "You can change this title only on the same day it was created. Think carefully about what you want to do."
 const descriptionPlaceholder = 'Describe steps, updates and reminders...'
 
 export default tag CardEditor < CardAdder
 	card\Card
-	extraContent\string = ''
+	extraContent\string
 
 	#titleEditing\boolean
 	#descriptionEditing\boolean
@@ -35,7 +36,7 @@ export default tag CardEditor < CardAdder
 		#titleEditing = no
 		#descriptionEditing = no
 		content = card.title
-		extraContent &&= card.description
+		extraContent = card.description
 		$dialog.showModal!
 
 	def save
@@ -62,7 +63,7 @@ export default tag CardEditor < CardAdder
 			<.container>
 				<.row>
 					<h3> 'Title'
-					<button.close @click=close> '✖'
+					<button.close @click=close> <img[w:14px] src=closeIcon>
 
 				<form.container @submit.prevent=save>
 					<textarea$tinput disabled=(not #titleEditing) name='title' placeholder=titlePlaceholder rows=5 bind=content>

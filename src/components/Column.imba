@@ -7,6 +7,7 @@ import openStarIcon from '../assets/open-star-icon.png'
 
 export default tag Column
 	data\IColumn
+	description\string
 
 	#hovering = no
 
@@ -121,6 +122,8 @@ export default tag Column
 			<span[fs:sm c:warm7 mt:-2]> date
 		elif data.index is 7
 			<span[fs:sm c:warm7 mt:-2]> weekDateRange
+
+		<span> description if description
 
 		<%star-viewer [d:hcc g:0.5 mb:2 cursor:default]>
 			<img [w:19px filter:contrast(20%)] key="c{i}" src=closedStarIcon> for i in [0 ... lengthViewer[0]]

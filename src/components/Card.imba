@@ -59,7 +59,7 @@ export default tag Card
 	css d:hcs c:cooler6 rd:lg p:2 bd:$color bgc:$color w:100% bxs:sm g:5
 		.content ta:start fs:md-
 		.icon d:hcc cursor:pointer
-			@hover bgc:cooler3 rd:full p:0.1
+			@hover bgc:cooler3 rd:full
 
 	<self [cursor:grab]=(canMove and pending?) [$color:cooler0] [bgc:gray6/30 c:warmer1]=#dragging
 		draggable=(canMove and pending?)
@@ -73,7 +73,8 @@ export default tag Card
 				css .hide-on-dragging visibility:hidden
 
 			if isNegative
-				<span.icon.hide-on-dragging> <img[w:20px] src=trashIcon>
+				<CardEditor card=data>
+					<span.icon.hide-on-dragging> <img[w:20px] src=trashIcon>
 			
 			else switch data.status
 				when 'pending'
